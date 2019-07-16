@@ -1,6 +1,7 @@
 package com.tw.apistackbase.controller;
 
 import com.tw.apistackbase.entity.Company;
+import com.tw.apistackbase.entity.Employee;
 import com.tw.apistackbase.repository.CompanyRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,25 +19,35 @@ public class CompanyController {
   private CompanyRepository companyRepository;
 
   @RequestMapping(value = "/companies/{id}", method = RequestMethod.GET)
-  public ResponseEntity<List<Company>> getAllCompaniesByEmployeeNumber(@PathVariable("id") Integer employeeNumber){
-         if (employeeNumber==null){
-           return  ResponseEntity.notFound().build();
-         }else{
-//           System.out.println("Not null!");
-          return  ResponseEntity.ok(companyRepository.getCompanies()
-              .stream().filter(e->e.getEmployeeNumber().equals(employeeNumber))
-              .collect(Collectors.toList()));
-         }
-  }
-  @RequestMapping(value = "/companies", method = RequestMethod.GET)
-  public ResponseEntity<List<Company>> getAllCompanies(@PathVariable (required = false)Integer employeeNumber){
-    if (employeeNumber==null){
-      return ResponseEntity.ok(companyRepository.getCompanies());
-    }else{
-//           System.out.println("Not null!");
-      return  ResponseEntity.ok(companyRepository.getCompanies()
-          .stream().filter(e->e.getEmployeeNumber().equals(employeeNumber))
+  public ResponseEntity<List<Company>> getAllCompaniesByEmployeeNumber(
+      @PathVariable  Integer id) {
+    if (id == null) {
+      return ResponseEntity.notFound().build();
+    } else {
+      return ResponseEntity.ok(companyRepository.getCompanies()
+          .stream().filter(e -> e.getId().equals(id))
           .collect(Collectors.toList()));
     }
+  }
+
+  @RequestMapping(value = "/companies", method = RequestMethod.GET)
+  public ResponseEntity<List<Company>> getAllCompanies() {
+
+      return ResponseEntity.ok(companyRepository.getCompanies());
+
+  }
+
+  @RequestMapping(value = "/companies/{employeeNumber}/employees", method = RequestMethod.GET)
+  public ResponseEntity<List<Employee>> getAllEmployeesOfCompany(
+      @PathVariable Integer employeeNumber) {
+
+    Company company = companyRepository.getCompanies()
+        .stream().filter(e -> e.getEmployeeNumber().equals(employeeNumber))
+        .findFirst().orElse(null);
+    if (company != null) {
+      return ResponseEntity.ok(company.getEmployees());
+    }
+    return ResponseEntity.notFound().build();
+
   }
 }

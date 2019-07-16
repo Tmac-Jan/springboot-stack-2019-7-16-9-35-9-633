@@ -4,6 +4,24 @@ import java.util.List;
 
 public class Company {
 
+  private Integer Id;
+
+  public Integer getId() {
+    return Id;
+  }
+
+  public void setId(Integer id) {
+    Id = id;
+  }
+
+  public Company(Integer id, String companyName, Integer employeeNumber,
+      List<Employee> employees) {
+    Id = id;
+    this.companyName = companyName;
+    this.employeeNumber = employeeNumber;
+    this.employees = employees;
+  }
+
   private String companyName;
   private Integer employeeNumber;
   private List<Employee> employees ;

@@ -12,11 +12,11 @@ public class CompanyRepository {
 
   public CompanyRepository() {
     companies = new ArrayList<Company>() {{
-      add(new Company("alibaba", 1000
+      add(new Company(0,"alibaba", 1000
           , new EmployeeRepository().getEmployeeList()));
-      add(new Company("baidu", 2000
+      add(new Company(1,"baidu", 2000
           , new EmployeeRepository().getEmployeeList()));
-      add(new Company("sina", 3000
+      add(new Company(2,"sina", 3000
           , new EmployeeRepository().getEmployeeList()));
     }};
   }
