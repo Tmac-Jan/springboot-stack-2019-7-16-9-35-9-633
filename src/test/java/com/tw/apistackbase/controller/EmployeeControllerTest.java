@@ -1,5 +1,6 @@
 package com.tw.apistackbase.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -225,5 +226,45 @@ public class EmployeeControllerTest {
             + "    \"gender\": \"female\",\n"
             + "    \"salary\": 9999\n"
             + "}"));
+  }
+  @Test
+  public void should_return_company_when_call_delete_employee_api()
+      throws Exception {
+    mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
+    List<Employee> mockEmployee = new ArrayList<Employee>() {{
+      add(new Employee(0, "gio", 20, "male", 18888));
+      add(new Employee(1, "sala", 21, "female", 17777));
+      add(new Employee(2, "nini", 22, "female", 9999));
+      add(new Employee(3, "yuyi", 23, "male", 8888));
+    }};
+    Mockito.when(mockEmployeeRepository.getEmployeeList()).thenReturn(mockEmployee);
+    mockMvc.perform(delete("/employees/1")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+    )
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("[\n"
+            + "    {\n"
+            + "        \"id\": 0,\n"
+            + "        \"name\": \"gio\",\n"
+            + "        \"age\": 20,\n"
+            + "        \"gender\": \"male\",\n"
+            + "        \"salary\": 18888\n"
+            + "    },\n"
+            + "    {\n"
+            + "        \"id\": 2,\n"
+            + "        \"name\": \"nini\",\n"
+            + "        \"age\": 22,\n"
+            + "        \"gender\": \"female\",\n"
+            + "        \"salary\": 9999\n"
+            + "    },\n"
+            + "    {\n"
+            + "        \"id\": 3,\n"
+            + "        \"name\": \"yuyi\",\n"
+            + "        \"age\": 23,\n"
+            + "        \"gender\": \"male\",\n"
+            + "        \"salary\": 8888\n"
+            + "    }\n"
+            + "]"));
   }
 }
