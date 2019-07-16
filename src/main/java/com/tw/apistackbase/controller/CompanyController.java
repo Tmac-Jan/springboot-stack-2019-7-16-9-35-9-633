@@ -67,13 +67,7 @@ public class CompanyController {
   public ResponseEntity<Company> createCompany(@RequestBody Company company) {
     if (company.getId() == null) {
       Company willCreatedCompany = new Company();
-      System.out.println(
-          "company Id:" + company.getId() + "" + company.getCompanyName() + "" + company
-              .getEmployeeNumber());
       BeanUtils.copyProperties(company, willCreatedCompany);
-      System.out.println(
-          "willCreatedCompany Id:" + willCreatedCompany.getId() + "" + willCreatedCompany
-              .getCompanyName() + "" + willCreatedCompany.getEmployeeNumber());
       willCreatedCompany.setId(companyRepository.getCompanies().size());
       companyRepository.getCompanies().add(willCreatedCompany);
       return ResponseEntity.ok(willCreatedCompany);
