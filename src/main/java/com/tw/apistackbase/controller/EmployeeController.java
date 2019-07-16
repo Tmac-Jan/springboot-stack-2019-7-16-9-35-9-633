@@ -5,6 +5,7 @@ import com.tw.apistackbase.repository.EmployeeRepository;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,14 +19,18 @@ public class EmployeeController {
 
   @GetMapping("/employees")
   public ResponseEntity getEmployees(@RequestParam(defaultValue = "0") Integer page,
-      @RequestParam(defaultValue = "1") Integer pageSize) {
+      @RequestParam(defaultValue = "0") Integer pageSize,@RequestParam String gender) {
     if (page > 0 && pageSize > 0) {
       return ResponseEntity.ok(employeeRepository.getEmployeeList()
           .subList(page - 1, page * pageSize).stream().collect(Collectors.toList()));
-    }
+    }else if (!StringUtils.isEmpty(gender)){
+      return ResponseEntity.ok(employeeRepository.getEmployeeList()
+          .stream().filter(e->e.getGender().equals(gender)));
+    }else
     return ResponseEntity.ok(employeeRepository.getEmployeeList());
   }
   @GetMapping("/employees/{id}")
+
   public ResponseEntity getEmployeesById(@PathVariable Integer id) {
 
       Employee employee = employeeRepository.getEmployeeList()

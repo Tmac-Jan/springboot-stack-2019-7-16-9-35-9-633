@@ -125,4 +125,34 @@ public class EmployeeControllerTest {
             + "    \"salary\": 18888\n"
             + "}"));
   }
+  @Test
+  public void should_return_List_of_employees_when_call_employee_api_by_gender() throws Exception {
+    mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
+    List<Employee> mockEmployee = new ArrayList<Employee>() {{
+      add(new Employee(0, "gio", 20, "male", 18888));
+      add(new Employee(1, "sala", 21, "female", 17777));
+      add(new Employee(2, "nini", 22, "female", 9999));
+      add(new Employee(3, "yuyi", 23, "male", 8888));
+    }};
+    Mockito.when(mockEmployeeRepository.getEmployeeList()).thenReturn(mockEmployee);
+    mockMvc.perform(get("/employees/?gender=female"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("[\n"
+            + "    {\n"
+            + "        \"id\": 1,\n"
+            + "        \"name\": \"sala\",\n"
+            + "        \"age\": 21,\n"
+            + "        \"gender\": \"female\",\n"
+            + "        \"salary\": 17777\n"
+            + "    },\n"
+            + "    {\n"
+            + "        \"id\": 2,\n"
+            + "        \"name\": \"nini\",\n"
+            + "        \"age\": 22,\n"
+            + "        \"gender\": \"female\",\n"
+            + "        \"salary\": 9999\n"
+            + "    }\n"
+            + "]"));
+  }
 }
