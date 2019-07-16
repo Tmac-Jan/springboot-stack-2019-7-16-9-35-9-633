@@ -2,6 +2,7 @@ package com.tw.apistackbase.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -358,6 +359,36 @@ public class CompanyControllerTest {
             + "    \"employeeNumber\": 1000,\n"
             + "    \"employees\": null,\n"
             + "    \"id\": 3\n"
+            + "}"));
+  }
+  @Test
+  public void shoule_return_company_when_call_modifiy_company_api()
+      throws Exception {
+    mockCompanyRepository = Mockito.mock(CompanyRepository.class);
+    List<Company> mockCompanies = new ArrayList<Company>() {{
+      add(new Company(0, "alibaba", 1000
+          , new EmployeeRepository().getEmployeeList()));
+      add(new Company(1, "baidu", 2000
+          , new EmployeeRepository().getEmployeeList()));
+      add(new Company(2, "sina", 3000
+          , new EmployeeRepository().getEmployeeList()));
+    }};
+    Mockito.when(mockCompanyRepository.getCompanies()).thenReturn(mockCompanies);
+    mockMvc.perform(put("/companies/1")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .content("{\n"
+            + "\t\"id\":\"1\",\n"
+            + "\t\"companyName\":\"baidu1\",\n"
+            + "\t\"employeeNumber\":1000\n"
+            + "}")
+    )
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("{\n"
+            + "    \"companyName\": \"baidu1\",\n"
+            + "    \"employeeNumber\": 1000,\n"
+            + "    \"employees\": null,\n"
+            + "    \"id\": 1\n"
             + "}"));
   }
 }
