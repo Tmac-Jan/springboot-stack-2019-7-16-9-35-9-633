@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,7 +21,7 @@ public class CompanyController {
 
   @RequestMapping(value = "/companies/{id}", method = RequestMethod.GET)
   public ResponseEntity<List<Company>> getAllCompaniesByEmployeeNumber(
-      @PathVariable  Integer id) {
+      @PathVariable Integer id) {
     if (id == null) {
       return ResponseEntity.notFound().build();
     } else {
@@ -30,12 +31,12 @@ public class CompanyController {
     }
   }
 
-  @RequestMapping(value = "/companies", method = RequestMethod.GET)
-  public ResponseEntity<List<Company>> getAllCompanies() {
-
-      return ResponseEntity.ok(companyRepository.getCompanies());
-
-  }
+//  @RequestMapping(value = "/companies", method = RequestMethod.GET)
+//  public ResponseEntity<List<Company>> getAllCompanies() {
+//
+//    return ResponseEntity.ok(companyRepository.getCompanies());
+//
+//  }
 
   @RequestMapping(value = "/companies/{id}/employees", method = RequestMethod.GET)
   public ResponseEntity<List<Employee>> getAllEmployeesOfCompany(
@@ -49,5 +50,17 @@ public class CompanyController {
     }
     return ResponseEntity.notFound().build();
 
+  }
+
+
+  @RequestMapping(value = "/companies", method = RequestMethod.GET)
+  public ResponseEntity<List<Company>> getAllCompaniesByPageAndPageSize(
+      @RequestParam(defaultValue = "1") Integer page, @RequestParam (defaultValue = "3")Integer pageSize) {
+    if (page>0&&pageSize>0){
+      return ResponseEntity.ok(companyRepository.getCompanies()
+          .stream()
+          .limit(page * pageSize).collect(Collectors.toList()));
+    }
+      return ResponseEntity.notFound().build();
   }
 }

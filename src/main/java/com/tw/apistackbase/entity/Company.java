@@ -5,7 +5,9 @@ import java.util.List;
 public class Company {
 
   private Integer Id;
-
+  private String companyName;
+  private Integer employeeNumber;
+  private List<Employee> employees ;
   public Integer getId() {
     return Id;
   }
@@ -22,9 +24,7 @@ public class Company {
     this.employees = employees;
   }
 
-  private String companyName;
-  private Integer employeeNumber;
-  private List<Employee> employees ;
+
 
   public Company() {
   }
