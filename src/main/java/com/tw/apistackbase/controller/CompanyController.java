@@ -5,9 +5,14 @@ import com.tw.apistackbase.entity.Employee;
 import com.tw.apistackbase.repository.CompanyRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import jdk.net.SocketFlow.Status;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,5 +67,21 @@ public class CompanyController {
           .limit(page * pageSize).collect(Collectors.toList()));
     }
       return ResponseEntity.notFound().build();
+  }
+
+  @PostMapping(value = "/companies")
+  public ResponseEntity<Company> createCompany(@RequestBody Company company){
+    if (company.getId()==null){
+      Company willCreatedCompany = new Company();
+      System.out.println("company Id:"+company.getId()+""+company.getCompanyName()+""+company.getEmployeeNumber());
+      BeanUtils.copyProperties(company,willCreatedCompany);
+      System.out.println("willCreatedCompany Id:"+willCreatedCompany.getId()+""+willCreatedCompany.getCompanyName()+""+willCreatedCompany.getEmployeeNumber());
+      willCreatedCompany.setId(companyRepository.getCompanies().size());
+      companyRepository.getCompanies().add(willCreatedCompany);
+      System.out.println("1111");
+      return ResponseEntity.ok(willCreatedCompany);
+    }
+    else
+      return (ResponseEntity<Company>) ResponseEntity.badRequest();
   }
 }
