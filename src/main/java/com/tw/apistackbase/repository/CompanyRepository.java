@@ -20,4 +20,8 @@ public class CompanyRepository {
           , new EmployeeRepository().getEmployeeList()));
     }};
   }
+
+  public List<Company> getCompanies() {
+    return companies;
+  }
 }
