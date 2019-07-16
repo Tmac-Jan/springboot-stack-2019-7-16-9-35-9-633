@@ -149,6 +149,53 @@ public class CompanyControllerTest {
             + "    }\n"
             + "]"));
   }
-  
 
+  @Test
+  public void shoule_return_List_of_companies_when_call_all_companies_api_by_EmployeeNumber() throws Exception{
+    mockCompanyRepository = Mockito.mock(CompanyRepository.class);
+    List<Company>  mockCompanies = new ArrayList<Company>(){{
+      add(new Company("alibaba", 1000
+          , new EmployeeRepository().getEmployeeList()));
+    }};
+    Mockito.when(mockCompanyRepository.getCompanies()).thenReturn(mockCompanies);
+    mockMvc.perform(get("/companies/1000"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("[\n"
+            + "    {\n"
+            + "        \"companyName\": \"alibaba\",\n"
+            + "        \"employeeNumber\": 1000,\n"
+            + "        \"employees\": [\n"
+            + "            {\n"
+            + "                \"id\": 0,\n"
+            + "                \"name\": \"gio\",\n"
+            + "                \"age\": 20,\n"
+            + "                \"gender\": \"male\",\n"
+            + "                \"salary\": 18888\n"
+            + "            },\n"
+            + "            {\n"
+            + "                \"id\": 1,\n"
+            + "                \"name\": \"sala\",\n"
+            + "                \"age\": 21,\n"
+            + "                \"gender\": \"female\",\n"
+            + "                \"salary\": 17777\n"
+            + "            },\n"
+            + "            {\n"
+            + "                \"id\": 2,\n"
+            + "                \"name\": \"nini\",\n"
+            + "                \"age\": 22,\n"
+            + "                \"gender\": \"female\",\n"
+            + "                \"salary\": 9999\n"
+            + "            },\n"
+            + "            {\n"
+            + "                \"id\": 3,\n"
+            + "                \"name\": \"yuyi\",\n"
+            + "                \"age\": 23,\n"
+            + "                \"gender\": \"male\",\n"
+            + "                \"salary\": 8888\n"
+            + "            }\n"
+            + "        ]\n"
+            + "    }\n"
+            + "]"));
+  }
 }
