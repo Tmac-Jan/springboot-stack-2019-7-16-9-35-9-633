@@ -5,11 +5,10 @@ import com.tw.apistackbase.entity.Employee;
 import com.tw.apistackbase.repository.CompanyRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-import jdk.net.SocketFlow.Status;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -101,5 +100,12 @@ public class CompanyController {
     } else {
       return (ResponseEntity<Company>) ResponseEntity.badRequest();
     }
+  }
+  @DeleteMapping (value = "/companies/{id}")
+  public ResponseEntity<List<Company>> modifyCompany(@PathVariable Integer id) {
+    return ResponseEntity.ok(companyRepository.getCompanies()
+        .stream()
+        .filter(e->e.getId()!=id)
+        .collect(Collectors.toList()));
   }
 }
