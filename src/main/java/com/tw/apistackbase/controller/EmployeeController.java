@@ -25,7 +25,7 @@ public class EmployeeController {
 
   @GetMapping("/employees")
   public ResponseEntity getEmployees(@RequestParam(defaultValue = "0") Integer page,
-      @RequestParam(defaultValue = "0") Integer pageSize, @RequestParam String gender) {
+      @RequestParam(defaultValue = "0") Integer pageSize, @RequestParam(required = false) String gender) {
     if (page > 0 && pageSize > 0) {
       return ResponseEntity.ok(employeeRepository.getEmployeeList()
           .subList(page - 1, page * pageSize).stream().collect(Collectors.toList()));
