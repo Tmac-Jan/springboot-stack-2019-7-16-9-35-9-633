@@ -5,9 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tw.apistackbase.entity.Company;
 import com.tw.apistackbase.entity.Employee;
-import com.tw.apistackbase.repository.CompanyRepository;
 import com.tw.apistackbase.repository.EmployeeRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,7 @@ public class EmployeeControllerTest {
   private EmployeeController employeeController;
 
   @Test
-  public void shoule_return_List_of_employees_when_call_all_employees_api() throws Exception {
+  public void should_return_List_of_employees_when_call_all_employees_api() throws Exception {
     mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
     List<Employee> mockEmployee = new ArrayList<Employee>() {{
       add(new Employee(0, "gio", 20, "male", 18888));
@@ -76,5 +74,34 @@ public class EmployeeControllerTest {
             + "    }\n"
             + "]"));
   }
-
+  @Test
+  public void should_return_List_of_employees_when_call_employees_api_by_page_and_pageSize() throws Exception {
+    mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
+    List<Employee> mockEmployees = new ArrayList<Employee>() {{
+      add(new Employee(0, "gio", 20, "male", 18888));
+      add(new Employee(1, "sala", 21, "female", 17777));
+      add(new Employee(2, "nini", 22, "female", 9999));
+      add(new Employee(3, "yuyi", 23, "male", 8888));
+    }};
+    Mockito.when(mockEmployeeRepository.getEmployeeList()).thenReturn(mockEmployees);
+    mockMvc.perform(get("/employees?page=1&pageSize=2"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("[\n"
+            + "    {\n"
+            + "        \"id\": 0,\n"
+            + "        \"name\": \"gio\",\n"
+            + "        \"age\": 20,\n"
+            + "        \"gender\": \"male\",\n"
+            + "        \"salary\": 18888\n"
+            + "    },\n"
+            + "    {\n"
+            + "        \"id\": 1,\n"
+            + "        \"name\": \"sala\",\n"
+            + "        \"age\": 21,\n"
+            + "        \"gender\": \"female\",\n"
+            + "        \"salary\": 17777\n"
+            + "    }\n"
+            + "]"));
+  }
 }

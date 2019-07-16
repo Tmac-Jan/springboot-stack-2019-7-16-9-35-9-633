@@ -20,7 +20,7 @@ public class EmployeeController {
       @RequestParam(defaultValue = "1") Integer pageSize) {
     if (page > 0 && pageSize > 0) {
       return ResponseEntity.ok(employeeRepository.getEmployeeList()
-          .subList(page - 1, page * pageSize - 1).stream().collect(Collectors.toList()));
+          .subList(page - 1, page * pageSize).stream().collect(Collectors.toList()));
     }
     return ResponseEntity.ok(employeeRepository.getEmployeeList());
   }
