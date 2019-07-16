@@ -256,11 +256,15 @@ public class CompanyControllerTest {
       throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{
-      add(new Company("alibaba", 1000
+      add(new Company(0, "alibaba", 1000
+          , new EmployeeRepository().getEmployeeList()));
+      add(new Company(1, "baidu", 2000
+          , new EmployeeRepository().getEmployeeList()));
+      add(new Company(2, "sina", 3000
           , new EmployeeRepository().getEmployeeList()));
     }};
     Mockito.when(mockCompanyRepository.getCompanies()).thenReturn(mockCompanies);
-    mockMvc.perform(get("/companies?page=1&pageSize=2"))
+    mockMvc.perform(get("/companies?page=1&pageSize=3"))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().json("[\n"

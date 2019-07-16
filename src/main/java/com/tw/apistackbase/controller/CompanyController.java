@@ -37,12 +37,6 @@ public class CompanyController {
     }
   }
 
-//  @RequestMapping(value = "/companies", method = RequestMethod.GET)
-//  public ResponseEntity<List<Company>> getAllCompanies() {
-//
-//    return ResponseEntity.ok(companyRepository.getCompanies());
-//
-//  }
 
   @RequestMapping(value = "/companies/{id}/employees", method = RequestMethod.GET)
   public ResponseEntity<List<Employee>> getAllEmployeesOfCompany(
@@ -65,8 +59,7 @@ public class CompanyController {
       @RequestParam(defaultValue = "3") Integer pageSize) {
     if (page > 0 && pageSize > 0) {
       return ResponseEntity.ok(companyRepository.getCompanies()
-          .stream()
-          .limit(page * pageSize).collect(Collectors.toList()));
+          .subList(page-1,page*pageSize-1).stream().collect(Collectors.toList()));
     }
     return ResponseEntity.notFound().build();
   }
