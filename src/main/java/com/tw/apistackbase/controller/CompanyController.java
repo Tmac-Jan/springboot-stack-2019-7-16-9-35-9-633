@@ -37,12 +37,12 @@ public class CompanyController {
 
   }
 
-  @RequestMapping(value = "/companies/{employeeNumber}/employees", method = RequestMethod.GET)
+  @RequestMapping(value = "/companies/{id}/employees", method = RequestMethod.GET)
   public ResponseEntity<List<Employee>> getAllEmployeesOfCompany(
-      @PathVariable Integer employeeNumber) {
+      @PathVariable Integer id) {
 
     Company company = companyRepository.getCompanies()
-        .stream().filter(e -> e.getEmployeeNumber().equals(employeeNumber))
+        .stream().filter(e -> e.getId().equals(id))
         .findFirst().orElse(null);
     if (company != null) {
       return ResponseEntity.ok(company.getEmployees());
