@@ -35,7 +35,7 @@ public class CompanyControllerTest {
   private CompanyRepository mockCompanyRepository;
 
   @Test
-  public void shoule_return_List_of_companies_when_call_all_companies_api() throws Exception {
+  public void should_return_List_of_companies_when_call_all_companies_api() throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{
       add(new Company(0, "alibaba", 1000
@@ -160,7 +160,7 @@ public class CompanyControllerTest {
   }
 
   @Test
-  public void shoule_return_List_of_companies_when_call_all_companies_api_by_Id() throws Exception {
+  public void should_return_List_of_companies_when_call_all_companies_api_by_Id() throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{
       add(new Company(1, "baidu", 2000
@@ -210,7 +210,7 @@ public class CompanyControllerTest {
   }
 
   @Test
-  public void shoule_return_List_of_employees_when_call_all_employees_of_company_api_by_Id()
+  public void should_return_List_of_employees_when_call_all_employees_of_company_api_by_Id()
       throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{
@@ -254,7 +254,7 @@ public class CompanyControllerTest {
   }
 
   @Test
-  public void shoule_return_List_of_employees_when_call_all_employees_of_company_api_by_page_and_pageSize()
+  public void should_return_List_of_employees_when_call_all_employees_of_company_api_by_page_and_pageSize()
       throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{
@@ -344,7 +344,7 @@ public class CompanyControllerTest {
   }
 
   @Test
-  public void shoule_return_company_when_call_create_company_api()
+  public void should_return_company_when_call_create_company_api()
       throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{
@@ -370,7 +370,7 @@ public class CompanyControllerTest {
   }
 
   @Test
-  public void shoule_return_company_when_call_modifiy_company_api()
+  public void should_return_company_when_call_modifiy_company_api()
       throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{
@@ -401,7 +401,7 @@ public class CompanyControllerTest {
   }
 
   @Test
-  public void shoule_return_list_of_company_when_call_delete_company_api()
+  public void should_return_list_of_company_when_call_delete_company_api()
       throws Exception {
     mockCompanyRepository = Mockito.mock(CompanyRepository.class);
     List<Company> mockCompanies = new ArrayList<Company>() {{

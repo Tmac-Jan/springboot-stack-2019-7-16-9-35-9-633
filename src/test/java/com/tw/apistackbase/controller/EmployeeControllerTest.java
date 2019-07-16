@@ -1,11 +1,14 @@
 package com.tw.apistackbase.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.tw.apistackbase.entity.Company;
 import com.tw.apistackbase.entity.Employee;
+import com.tw.apistackbase.repository.CompanyRepository;
 import com.tw.apistackbase.repository.EmployeeRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EmployeeControllerTest {
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -74,8 +79,10 @@ public class EmployeeControllerTest {
             + "    }\n"
             + "]"));
   }
+
   @Test
-  public void should_return_List_of_employees_when_call_employees_api_by_page_and_pageSize() throws Exception {
+  public void should_return_List_of_employees_when_call_employees_api_by_page_and_pageSize()
+      throws Exception {
     mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
     List<Employee> mockEmployees = new ArrayList<Employee>() {{
       add(new Employee(0, "gio", 20, "male", 18888));
@@ -104,6 +111,7 @@ public class EmployeeControllerTest {
             + "    }\n"
             + "]"));
   }
+
   @Test
   public void should_return_List_of_employees_when_call_employee_api_by_id() throws Exception {
     mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
@@ -125,6 +133,7 @@ public class EmployeeControllerTest {
             + "    \"salary\": 18888\n"
             + "}"));
   }
+
   @Test
   public void should_return_List_of_employees_when_call_employee_api_by_gender() throws Exception {
     mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
@@ -154,5 +163,36 @@ public class EmployeeControllerTest {
             + "        \"salary\": 9999\n"
             + "    }\n"
             + "]"));
+  }
+
+  @Test
+  public void should_return_company_when_call_create_employee_api()
+      throws Exception {
+    mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
+    List<Employee> mockEmployee = new ArrayList<Employee>() {{
+      add(new Employee(0, "gio", 20, "male", 18888));
+      add(new Employee(1, "sala", 21, "female", 17777));
+      add(new Employee(2, "nini", 22, "female", 9999));
+      add(new Employee(3, "yuyi", 23, "male", 8888));
+    }};
+    Mockito.when(mockEmployeeRepository.getEmployeeList()).thenReturn(mockEmployee);
+    mockMvc.perform(post("/employees")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .content("{\n"
+            + "  \"name\": \"new\",\n"
+            + "  \"age\": 23,\n"
+            + "  \"gender\": \"female\",\n"
+            + "  \"salary\": 9999\n"
+            + "}")
+    )
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("{\n"
+            + "    \"id\": 4,\n"
+            + "    \"name\": \"new\",\n"
+            + "    \"age\": 23,\n"
+            + "    \"gender\": \"female\",\n"
+            + "    \"salary\": 9999\n"
+            + "}"));
   }
 }
