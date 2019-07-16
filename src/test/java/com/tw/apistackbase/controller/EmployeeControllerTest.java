@@ -104,4 +104,25 @@ public class EmployeeControllerTest {
             + "    }\n"
             + "]"));
   }
+  @Test
+  public void should_return_List_of_employees_when_call_employee_api_by_id() throws Exception {
+    mockEmployeeRepository = Mockito.mock(EmployeeRepository.class);
+    List<Employee> mockEmployee = new ArrayList<Employee>() {{
+      add(new Employee(0, "gio", 20, "male", 18888));
+      add(new Employee(1, "sala", 21, "female", 17777));
+      add(new Employee(2, "nini", 22, "female", 9999));
+      add(new Employee(3, "yuyi", 23, "male", 8888));
+    }};
+    Mockito.when(mockEmployeeRepository.getEmployeeList()).thenReturn(mockEmployee);
+    mockMvc.perform(get("/employees/0"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("{\n"
+            + "    \"id\": 0,\n"
+            + "    \"name\": \"gio\",\n"
+            + "    \"age\": 20,\n"
+            + "    \"gender\": \"male\",\n"
+            + "    \"salary\": 18888\n"
+            + "}"));
+  }
 }
