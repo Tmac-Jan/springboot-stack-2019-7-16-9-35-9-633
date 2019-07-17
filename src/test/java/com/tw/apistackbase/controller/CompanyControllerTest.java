@@ -231,7 +231,7 @@ public class CompanyControllerTest {
           , new EmployeeRepository().getEmployeeList()));
     }};
     Mockito.when(mockCompanyRepository.getCompanies()).thenReturn(mockCompanies);
-    mockMvc.perform(get("/companies?page=1&pageSize=3"))
+    mockMvc.perform(get("/companies?page=1&pageSize=2"))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().json("[\n"
