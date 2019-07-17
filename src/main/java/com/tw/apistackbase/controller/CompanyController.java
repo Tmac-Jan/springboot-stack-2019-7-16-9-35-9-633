@@ -54,13 +54,14 @@ public class CompanyController {
 
   @RequestMapping(value = "/companies", method = RequestMethod.GET)
   public ResponseEntity<List<Company>> getAllCompaniesByPageAndPageSize(
-      @RequestParam(defaultValue = "1") Integer page,
-      @RequestParam(defaultValue = "3") Integer pageSize) {
+      @RequestParam(defaultValue = "0") Integer page,
+      @RequestParam(defaultValue = "0") Integer pageSize) {
     if (page > 0 && pageSize > 0) {
+      System.out.println("page:"+page+" pageSize:"+pageSize);
       return ResponseEntity.ok(companyRepository.getCompanies()
-          .subList(page-1,page*pageSize-1).stream().collect(Collectors.toList()));
-    }
-    return ResponseEntity.notFound().build();
+          .subList(page-1,page*pageSize).stream().collect(Collectors.toList()));
+    }else
+    return ResponseEntity.ok(companyRepository.getCompanies());
   }
 
   @PostMapping(value = "/companies")
@@ -96,7 +97,7 @@ public class CompanyController {
     }
   }
   @DeleteMapping (value = "/companies/{id}")
-  public ResponseEntity<List<Company>> modifyCompany(@PathVariable Integer id) {
+  public ResponseEntity<List<Company>> deleteCompany(@PathVariable Integer id) {
     return ResponseEntity.ok(companyRepository.getCompanies()
         .stream()
         .filter(e->e.getId()!=id)
